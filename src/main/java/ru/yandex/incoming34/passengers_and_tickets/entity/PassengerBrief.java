@@ -1,5 +1,5 @@
 package ru.yandex.incoming34.passengers_and_tickets.entity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,15 +11,9 @@ import java.util.List;
 @Setter
 @ToString
 @NoArgsConstructor
-public class PassengerWithoutTicket {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "name")
-    private String name;
+public class PassengerBrief extends AbstractPassenger{
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "pass_id")
-    @JsonIgnore
-    private List<TicketWithoutPassengers> tickets;
+    @JsonBackReference
+    private List<TicketBrief> tickets;
 }

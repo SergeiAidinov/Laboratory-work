@@ -11,21 +11,11 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-public class PassengerWithTicket {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "name")
-    private String name;
+public class PassengerDetailed extends AbstractPassenger{
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "pass_id")
-    //@JsonIgnore
     @JsonManagedReference
-    private List<TicketWithoutPassengers> tickets;
+    private List<TicketBrief> tickets;
 
-    public PassengerWithTicket(String name) {
-        this.name = name;
-    }
 }

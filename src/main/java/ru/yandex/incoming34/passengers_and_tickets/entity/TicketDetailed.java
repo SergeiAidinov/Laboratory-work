@@ -1,6 +1,5 @@
 package ru.yandex.incoming34.passengers_and_tickets.entity;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +10,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor
-public class TicketWithoutPassengers {
-
+public class TicketDetailed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -21,10 +19,6 @@ public class TicketWithoutPassengers {
     private Integer ticketNumber;
     @ManyToOne
     @JoinColumn(name = "pass_id")
-    @JsonBackReference
-    private PassengerWithTicket passenger;
-
-    public TicketWithoutPassengers(Integer ticketNumber) {
-        this.ticketNumber = ticketNumber;
-    }
+    @JsonManagedReference
+    private PassengerBrief passenger;
 }

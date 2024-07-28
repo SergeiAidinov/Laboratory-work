@@ -7,19 +7,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.yandex.incoming34.passengers_and_tickets.PassengersAndTicketsApplication;
-import ru.yandex.incoming34.passengers_and_tickets.entity.PassengerWithTicket;
-import ru.yandex.incoming34.passengers_and_tickets.entity.TicketWithoutPassengers;
+import ru.yandex.incoming34.passengers_and_tickets.entity.PassengerDetailed;
+import ru.yandex.incoming34.passengers_and_tickets.entity.TicketBrief;
 
 import java.util.List;
 
 @SpringBootTest(classes = {PassengerRepo.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes= PassengersAndTicketsApplication.class)
-class PassengerWithTicketRepoTest {
+class PassengerDetailedRepoTest {
 
     private final PassengerRepo passengerRepo;
 
-    PassengerWithTicketRepoTest(@Qualifier("passengerRepo")PassengerRepo passengerRepo) {
+    PassengerDetailedRepoTest(@Qualifier("passengerRepo")PassengerRepo passengerRepo) {
         this.passengerRepo = passengerRepo;
     }
 
@@ -30,12 +30,12 @@ class PassengerWithTicketRepoTest {
 
     @Test
     public void insertPassenger(){
-        PassengerWithTicket passenger = new PassengerWithTicket("Andrew");
-        List<TicketWithoutPassengers> ticketWithoutPassengersList = List.of(new TicketWithoutPassengers(67890),
-                new TicketWithoutPassengers(987654),
-                new TicketWithoutPassengers(3214),
-                new TicketWithoutPassengers(842095791));
-        passenger.setTickets(ticketWithoutPassengersList);
+        PassengerDetailed passenger = new PassengerDetailed("Andrew");
+        List<TicketBrief> ticketBriefList = List.of(new TicketBrief(67890),
+                new TicketBrief(987654),
+                new TicketBrief(3214),
+                new TicketBrief(842095791));
+        passenger.setTickets(ticketBriefList);
         passengerRepo.save(passenger);
     }
 
