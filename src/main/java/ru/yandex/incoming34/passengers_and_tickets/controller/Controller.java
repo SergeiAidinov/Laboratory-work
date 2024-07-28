@@ -3,6 +3,7 @@ package ru.yandex.incoming34.passengers_and_tickets.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.incoming34.passengers_and_tickets.entity.Passenger;
 import ru.yandex.incoming34.passengers_and_tickets.entity.Ticket;
