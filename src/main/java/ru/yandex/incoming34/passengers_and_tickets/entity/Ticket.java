@@ -21,7 +21,6 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "pass_id")
     private Passenger passenger;
-
     public Ticket(Integer ticketNumber) {
         this.ticketNumber = ticketNumber;
     }
