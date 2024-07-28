@@ -7,20 +7,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.yandex.incoming34.passengers_and_tickets.PassengersAndTicketsApplication;
-import ru.yandex.incoming34.passengers_and_tickets.entity.Passenger;
-import ru.yandex.incoming34.passengers_and_tickets.entity.Ticket;
+import ru.yandex.incoming34.passengers_and_tickets.entity.PassengerWithTicket;
+import ru.yandex.incoming34.passengers_and_tickets.entity.TicketWithoutPassengers;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = {PassengerRepo.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes= PassengersAndTicketsApplication.class)
-class PassengerRepoTest {
+class PassengerWithTicketRepoTest {
 
     private final PassengerRepo passengerRepo;
 
-    PassengerRepoTest(@Qualifier("passengerRepo")PassengerRepo passengerRepo) {
+    PassengerWithTicketRepoTest(@Qualifier("passengerRepo")PassengerRepo passengerRepo) {
         this.passengerRepo = passengerRepo;
     }
 
@@ -31,12 +30,12 @@ class PassengerRepoTest {
 
     @Test
     public void insertPassenger(){
-        Passenger passenger = new Passenger("Andrew");
-        List<Ticket> ticketList = List.of(new Ticket(67890),
-                new Ticket(987654),
-                new Ticket(3214),
-                new Ticket(842095791));
-        passenger.setTickets(ticketList);
+        PassengerWithTicket passenger = new PassengerWithTicket("Andrew");
+        List<TicketWithoutPassengers> ticketWithoutPassengersList = List.of(new TicketWithoutPassengers(67890),
+                new TicketWithoutPassengers(987654),
+                new TicketWithoutPassengers(3214),
+                new TicketWithoutPassengers(842095791));
+        passenger.setTickets(ticketWithoutPassengersList);
         passengerRepo.save(passenger);
     }
 

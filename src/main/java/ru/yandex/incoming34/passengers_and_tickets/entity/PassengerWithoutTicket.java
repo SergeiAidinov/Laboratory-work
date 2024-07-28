@@ -1,5 +1,4 @@
 package ru.yandex.incoming34.passengers_and_tickets.entity;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +11,7 @@ import java.util.List;
 @Setter
 @ToString
 @NoArgsConstructor
-public class Passenger {
+public class PassengerWithoutTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,9 +21,5 @@ public class Passenger {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "pass_id")
     @JsonIgnore
-    private List<Ticket> tickets;
-
-    public Passenger(String name) {
-        this.name = name;
-    }
+    private List<TicketWithoutPassengers> tickets;
 }

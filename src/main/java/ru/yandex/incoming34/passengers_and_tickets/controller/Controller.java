@@ -3,12 +3,12 @@ package ru.yandex.incoming34.passengers_and_tickets.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.yandex.incoming34.passengers_and_tickets.entity.Passenger;
-import ru.yandex.incoming34.passengers_and_tickets.entity.Ticket;
+import ru.yandex.incoming34.passengers_and_tickets.entity.PassengerWithTicket;
+import ru.yandex.incoming34.passengers_and_tickets.entity.TicketWithPassenger;
 import ru.yandex.incoming34.passengers_and_tickets.repo.PassengerRepo;
 import ru.yandex.incoming34.passengers_and_tickets.repo.TicketRepo;
+import ru.yandex.incoming34.passengers_and_tickets.repo.TicketWithPassengerRepo;
 
 import java.util.List;
 
@@ -19,15 +19,16 @@ public class Controller {
 
     private final PassengerRepo passengerRepo;
     private final TicketRepo ticketRepo;
+    private final TicketWithPassengerRepo ticketWithPassengerRepo;
 
     @GetMapping("/all_passengers")
-    public List<Passenger> findAllPassengers() {
+    public List<PassengerWithTicket> findAllPassengers() {
         return passengerRepo.findAll();
     }
 
     @GetMapping("/all_tickets")
-    public Iterable<Ticket> findAllTickets() {
-        return ticketRepo.findAll();
+    public Iterable<TicketWithPassenger> findAllTickets() {
+        return ticketWithPassengerRepo.findAll();
     }
 
 
