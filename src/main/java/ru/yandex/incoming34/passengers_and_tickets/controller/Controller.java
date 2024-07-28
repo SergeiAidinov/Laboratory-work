@@ -30,6 +30,4 @@ public class Controller {
     public Iterable<TicketDetailed> findAllTickets() {
         return ticketWithPassengerRepo.findAll();
     }
-
-
 }

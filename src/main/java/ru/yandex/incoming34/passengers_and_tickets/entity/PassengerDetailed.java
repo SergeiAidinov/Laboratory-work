@@ -18,4 +18,11 @@ public class PassengerDetailed extends AbstractPassenger{
     @JsonManagedReference
     private List<TicketBrief> tickets;
 
+    public PassengerDetailed(String passengerName) {
+        super(passengerName);
+    }
+
+    public PassengerDetailed() {
+
+    }
 }
