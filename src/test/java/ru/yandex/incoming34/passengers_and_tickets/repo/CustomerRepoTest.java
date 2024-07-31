@@ -22,6 +22,6 @@ class CustomerRepoTest {
 
     @Test
     void findAll() {
-        //System.out.println(customerRepo.findAll());
+        System.out.println(customerRepo.findAll());
     }
 }
