@@ -9,11 +9,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.yandex.incoming34.passengers_and_tickets.PassengersAndTicketsApplication;
 import ru.yandex.incoming34.passengers_and_tickets.entity.PassengerDetailed;
 import ru.yandex.incoming34.passengers_and_tickets.entity.TicketBrief;
-import ru.yandex.incoming34.passengers_and_tickets.mapper.PostgreSQLRangeType;
 
 import java.util.List;
 
-@SpringBootTest(classes = {PassengerRepo.class, PostgreSQLRangeType.class})
+@SpringBootTest(classes = {PassengerRepo.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes= PassengersAndTicketsApplication.class)
 class PassengerDetailedRepoTest {

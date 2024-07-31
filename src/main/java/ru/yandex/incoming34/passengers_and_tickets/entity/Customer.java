@@ -1,32 +1,43 @@
 package ru.yandex.incoming34.passengers_and_tickets.entity;
 
-import io.hypersistence.utils.hibernate.type.range.PostgreSQLRangeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.hypersistence.utils.hibernate.type.range.Range;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Data;
-import org.hibernate.annotations.TypeDef;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "customer")
-@Data
-@TypeDef(typeClass = PostgreSQLRangeType.class, defaultForType = Range.class)
+@Getter
+@NoArgsConstructor
 public class Customer {
+
     @Id
     private Long id;
     @Column(name = "customer_name")
     private String firstName;
     @Column(name = "customer_surname")
     private String lastName;
-    @javax.persistence.Column(name = "active_period")
     @Column(
             name = "active_period",
             columnDefinition = "tstzrange"
     )
+    @JsonIgnore
     private Range<LocalDate> actionTime;
 
+    private transient LocalDateTime startTime;
+    private transient boolean startTimeIncluded;
+    private transient LocalDateTime endTime;
+    private transient boolean endTimeIncluded;
+
+    @PostLoad
+    private void init(){
+        startTime = LocalDateTime.from(actionTime.lower());
+        startTimeIncluded = actionTime.isLowerBoundClosed();
+        endTime = LocalDateTime.from(actionTime.upper());
+        endTimeIncluded = actionTime.isUpperBoundClosed();
+    }
 }
