@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.yandex.incoming34.passengers_and_tickets.entity.Customer;
 import ru.yandex.incoming34.passengers_and_tickets.entity.PassengerDetailed;
 import ru.yandex.incoming34.passengers_and_tickets.entity.TicketDetailed;
+import ru.yandex.incoming34.passengers_and_tickets.repo.CustomerRepo;
 import ru.yandex.incoming34.passengers_and_tickets.repo.PassengerRepo;
 import ru.yandex.incoming34.passengers_and_tickets.repo.TicketRepo;
 import ru.yandex.incoming34.passengers_and_tickets.repo.TicketWithPassengerRepo;
@@ -20,6 +22,7 @@ public class Controller {
     private final PassengerRepo passengerRepo;
     private final TicketRepo ticketRepo;
     private final TicketWithPassengerRepo ticketWithPassengerRepo;
+    private final CustomerRepo customerRepo;
 
     @GetMapping("/all_passengers")
     public List<PassengerDetailed> findAllPassengers() {
@@ -29,5 +32,11 @@ public class Controller {
     @GetMapping("/all_tickets")
     public Iterable<TicketDetailed> findAllTickets() {
         return ticketWithPassengerRepo.findAll();
+    }
+
+    @GetMapping("/customers")
+    public Iterable<Customer> customers() {
+         Iterable<Customer> customers = customerRepo.findAll();
+         return customers;
     }
 }
