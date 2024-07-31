@@ -13,9 +13,4 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 public class PassengerBrief extends AbstractPassenger{
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "pass_id")
-    @JsonBackReference
-    @JsonIgnore
-    private List<TicketBrief> tickets;
 }

@@ -30,7 +30,7 @@ class PassengerDetailedRepoTest {
 
     @Test
     public void insertPassenger(){
-        PassengerDetailed passenger = new PassengerDetailed("Andrew");
+        PassengerDetailed passenger = new PassengerDetailed("Boris");
         List<TicketBrief> ticketBriefList = List.of(new TicketBrief(67890),
                 new TicketBrief(987654),
                 new TicketBrief(3214),

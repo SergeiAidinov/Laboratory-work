@@ -18,11 +18,6 @@ public class TicketBrief {
     private Long ticketId;
     @Column(name = "ticket_number")
     private Integer ticketNumber;
-    @ManyToOne
-    @JoinColumn(name = "pass_id")
-    @JsonBackReference
-    @JsonIgnore
-    private PassengerBrief passenger;
 
     public TicketBrief(Integer ticketNumber) {
         this.ticketNumber = ticketNumber;
