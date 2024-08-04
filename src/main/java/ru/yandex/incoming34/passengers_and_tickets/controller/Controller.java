@@ -5,10 +5,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.yandex.incoming34.passengers_and_tickets.dto.BriefCustomer;
 import ru.yandex.incoming34.passengers_and_tickets.dto.PassengersDto;
 import ru.yandex.incoming34.passengers_and_tickets.entity.Customer;
 import ru.yandex.incoming34.passengers_and_tickets.entity.PassengerDetailed;
@@ -55,4 +55,13 @@ public class Controller {
         Iterable<Customer> customers = customerRepo.findAll();
         return customers;
     }
+
+    @DeleteMapping(path = "/new_customer", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void newCustomer(HttpServletRequest request, BriefCustomer briefCustomer) {
+        System.out.println(request.getParameterValues("name"));
+        System.out.println(request.getParameterMap());
+        //System.out.println(briefCustomer);
+        System.out.println();
+    }
+
 }
