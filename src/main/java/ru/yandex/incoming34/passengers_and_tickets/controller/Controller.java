@@ -3,7 +3,9 @@ package ru.yandex.incoming34.passengers_and_tickets.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import ru.yandex.incoming34.passengers_and_tickets.entity.PassengerDetailed;
 import ru.yandex.incoming34.passengers_and_tickets.entity.TicketDetailed;
 import ru.yandex.incoming34.passengers_and_tickets.repo.*;
 import ru.yandex.incoming34.passengers_and_tickets.service.FileLoader;
+import ru.yandex.incoming34.passengers_and_tickets.service.FileSaver;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,10 +26,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @AllArgsConstructor
@@ -39,6 +39,7 @@ public class Controller {
     private final CustomerRepo customerRepo;
     private final FileLoader fileLoader;
     private final LoadedFilesRepo loadedFilesRepo;
+    private final FileSaver fileSaver;
 
     @GetMapping("/all_passengers")
     public ResponseEntity<PassengersDto> findAllPassengers(HttpServletRequest request, HttpServletResponse response) {
@@ -95,21 +96,8 @@ public class Controller {
     }
 
     @PutMapping(path = "/download_file")
-    public void downloadFile(String fileName) throws IOException {
-        Optional<LoadedFile> loadedFileOptional = loadedFilesRepo.findById(fileName);
-        LoadedFile loadedFile = loadedFileOptional.get();
-        File outputFile = new File(System.getenv().get("PWD")
-                +File.separator
-                +"src"
-                + File.separator
-                +"main"
-                +File.separator
-                +"resources"
-                +File.separator
-                +"downloaded_files" + File.separator + fileName);
-        Files.write(outputFile.toPath(), loadedFile.getFileContent());
-        System.out.println(outputFile.getAbsolutePath());
-
+    public boolean downloadFile(String fileName) {
+        LoadedFile loadedFile = loadedFilesRepo.findById(fileName).orElseThrow(NoSuchElementException::new);
+        return fileSaver.saveFile(loadedFile);
     }
-
 }
