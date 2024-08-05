@@ -26,7 +26,7 @@ public class SwaggerConfig {
     Info info() {
         return new Info().title("This is just laboratory work." +
                         " Author: Sergei Aidinov")
-                .description("Wheather info provider: https://openweathermap.org/")
+                .description("This software does not do real work")
                 .version(componentVersion()).contact(contact());
     }
 

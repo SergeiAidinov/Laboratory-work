@@ -8,8 +8,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.yandex.incoming34.passengers_and_tickets.dto.BriefCustomer;
+import ru.yandex.incoming34.passengers_and_tickets.dto.PassengerDetailedDto;
 import ru.yandex.incoming34.passengers_and_tickets.dto.PassengersDto;
+import ru.yandex.incoming34.passengers_and_tickets.dto.Person;
 import ru.yandex.incoming34.passengers_and_tickets.entity.Customer;
 import ru.yandex.incoming34.passengers_and_tickets.entity.PassengerDetailed;
 import ru.yandex.incoming34.passengers_and_tickets.entity.TicketDetailed;
@@ -17,7 +20,9 @@ import ru.yandex.incoming34.passengers_and_tickets.repo.CustomerRepo;
 import ru.yandex.incoming34.passengers_and_tickets.repo.PassengerRepo;
 import ru.yandex.incoming34.passengers_and_tickets.repo.TicketRepo;
 import ru.yandex.incoming34.passengers_and_tickets.repo.TicketWithPassengerRepo;
+import ru.yandex.incoming34.passengers_and_tickets.service.FileLoader;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +35,7 @@ public class Controller {
     private final TicketRepo ticketRepo;
     private final TicketWithPassengerRepo ticketWithPassengerRepo;
     private final CustomerRepo customerRepo;
+    private final FileLoader fileLoader;
 
     @GetMapping("/all_passengers")
     public ResponseEntity<PassengersDto> findAllPassengers(HttpServletRequest request, HttpServletResponse response) {
@@ -56,12 +62,33 @@ public class Controller {
         return customers;
     }
 
-    @DeleteMapping(path = "/new_customer", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void newCustomer(HttpServletRequest request, BriefCustomer briefCustomer) {
+    @DeleteMapping(path = "/new_customer")
+    public void newCustomer(HttpServletRequest request , @RequestBody PassengerDetailedDto passengerDetailedDto) {
         System.out.println(request.getParameterValues("name"));
         System.out.println(request.getParameterMap());
-        //System.out.println(briefCustomer);
+        System.out.println(passengerDetailedDto);
         System.out.println();
+    }
+
+    @DeleteMapping(path = "/call")
+    public void deleteCall(){
+        System.out.println("DELETE CALLED!");
+    }
+
+    @PostMapping(path = "/post_new_customer", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public PassengerDetailedDto postNewCustomer(@RequestBody PassengerDetailedDto passengerDetailedDto) {
+        /*System.out.println(request.getParameterValues("name"));
+        System.out.println(request.getParameterMap());*/
+        //System.out.println(person);
+        System.out.println("POST NEW CUSTOMER: " + passengerDetailedDto);
+        return passengerDetailedDto;
+    }
+
+    @PostMapping(path = "/file", consumes = {"multipart/form-data"})
+    public String loadFile(@RequestParam("file") MultipartFile file) throws IOException {
+        long start = System.currentTimeMillis();
+        fileLoader.loadFile(file);
+        return "Файл загружен за " + (System.currentTimeMillis() - start) + " ms.";
     }
 
 }
