@@ -19,5 +19,5 @@ public class LoadedFile {
     @Column(name = "file_name")
     private String id;
     @Column(name = "file_body")
-    private byte[] fileBody;
+    private byte[] fileContent;
 }

@@ -3,27 +3,29 @@ package ru.yandex.incoming34.passengers_and_tickets.controller;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpServletResponseWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.yandex.incoming34.passengers_and_tickets.dto.BriefCustomer;
 import ru.yandex.incoming34.passengers_and_tickets.dto.PassengerDetailedDto;
 import ru.yandex.incoming34.passengers_and_tickets.dto.PassengersDto;
-import ru.yandex.incoming34.passengers_and_tickets.dto.Person;
 import ru.yandex.incoming34.passengers_and_tickets.entity.Customer;
+import ru.yandex.incoming34.passengers_and_tickets.entity.LoadedFile;
 import ru.yandex.incoming34.passengers_and_tickets.entity.PassengerDetailed;
 import ru.yandex.incoming34.passengers_and_tickets.entity.TicketDetailed;
-import ru.yandex.incoming34.passengers_and_tickets.repo.CustomerRepo;
-import ru.yandex.incoming34.passengers_and_tickets.repo.PassengerRepo;
-import ru.yandex.incoming34.passengers_and_tickets.repo.TicketRepo;
-import ru.yandex.incoming34.passengers_and_tickets.repo.TicketWithPassengerRepo;
+import ru.yandex.incoming34.passengers_and_tickets.repo.*;
 import ru.yandex.incoming34.passengers_and_tickets.service.FileLoader;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -36,6 +38,7 @@ public class Controller {
     private final TicketWithPassengerRepo ticketWithPassengerRepo;
     private final CustomerRepo customerRepo;
     private final FileLoader fileLoader;
+    private final LoadedFilesRepo loadedFilesRepo;
 
     @GetMapping("/all_passengers")
     public ResponseEntity<PassengersDto> findAllPassengers(HttpServletRequest request, HttpServletResponse response) {
@@ -63,7 +66,7 @@ public class Controller {
     }
 
     @DeleteMapping(path = "/new_customer")
-    public void newCustomer(HttpServletRequest request , @RequestBody PassengerDetailedDto passengerDetailedDto) {
+    public void newCustomer(HttpServletRequest request, @RequestBody PassengerDetailedDto passengerDetailedDto) {
         System.out.println(request.getParameterValues("name"));
         System.out.println(request.getParameterMap());
         System.out.println(passengerDetailedDto);
@@ -71,7 +74,7 @@ public class Controller {
     }
 
     @DeleteMapping(path = "/call")
-    public void deleteCall(){
+    public void deleteCall() {
         System.out.println("DELETE CALLED!");
     }
 
@@ -85,10 +88,28 @@ public class Controller {
     }
 
     @PostMapping(path = "/file", consumes = {"multipart/form-data"})
-    public String loadFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public String uploadFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         long start = System.currentTimeMillis();
-        fileLoader.loadFile(file);
+        fileLoader.loadFile(multipartFile);
         return "Файл загружен за " + (System.currentTimeMillis() - start) + " ms.";
+    }
+
+    @PutMapping(path = "/download_file")
+    public void downloadFile(String fileName) throws IOException {
+        Optional<LoadedFile> loadedFileOptional = loadedFilesRepo.findById(fileName);
+        LoadedFile loadedFile = loadedFileOptional.get();
+        File outputFile = new File(System.getenv().get("PWD")
+                +File.separator
+                +"src"
+                + File.separator
+                +"main"
+                +File.separator
+                +"resources"
+                +File.separator
+                +"downloaded_files" + File.separator + fileName);
+        Files.write(outputFile.toPath(), loadedFile.getFileContent());
+        System.out.println(outputFile.getAbsolutePath());
+
     }
 
 }
